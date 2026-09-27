@@ -3,5 +3,8 @@ set -euo pipefail
 
 script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 export MUJOCO_GL=egl
+# Use the CUDA libraries installed with JAX and fail if GPU initialization fails.
+unset LD_LIBRARY_PATH
+export JAX_PLATFORMS=cuda
 
 exec "${PYTHON:-python}" "$script_dir/run_fbrac.py" "$@"

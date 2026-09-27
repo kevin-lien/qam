@@ -1,18 +1,19 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Original full FBRAC settings for cube-double task 1, seed 10001.
+# Original full QAM settings for cube-double task 1, seed 10001.
 script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 cd -- "$script_dir/.."
 export MUJOCO_GL=egl
 # Use the CUDA libraries installed with JAX and fail if GPU initialization fails.
 unset LD_LIBRARY_PATH
 export JAX_PLATFORMS=cuda
+export CUDA_VISIBLE_DEVICES=1
 
 exec "${PYTHON:-python}" main.py \
-  --agent=agents/fbrac.py \
+  --agent=agents/qam.py \
   --run_group=main-experiments \
-  --tags=FBRAC \
+  --tags=QAM \
   --seed=10001 \
   --env_name=cube-double-play-singletask-task1-v0 \
   --sparse=False \
@@ -39,4 +40,6 @@ exec "${PYTHON:-python}" main.py \
   --agent.tau=0.005 \
   --agent.flow_steps=10 \
   --agent.best_of_n=1 \
-  --agent.alpha=0.1
+  --agent.inv_temp=1.0 \
+  --agent.fql_alpha=0.0 \
+  --agent.edit_scale=0.0
