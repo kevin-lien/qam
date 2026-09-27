@@ -122,7 +122,6 @@ def setup_wandb(
         dir=wandb_output_dir,
         name=name,
         settings=wandb.Settings(
-            start_method='thread',
             _disable_stats=False,
         ),
         mode=mode,

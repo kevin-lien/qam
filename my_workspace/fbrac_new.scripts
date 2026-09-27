@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Original full FBRAC settings for cube-double task 1, seed 10001.
+script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+cd -- "$script_dir/.."
+export MUJOCO_GL=egl
+
+exec "${PYTHON:-python}" main.py \
+  --agent=agents/fbrac.py \
+  --run_group=main-experiments \
+  --tags=FBRAC \
+  --seed=10001 \
+  --env_name=cube-double-play-singletask-task1-v0 \
+  --sparse=False \
+  --horizon_length=5 \
+  --utd_ratio=1 \
+  --offline_steps=1000000 \
+  --online_steps=500000 \
+  --start_training=5000 \
+  --log_interval=5000 \
+  --eval_interval=50000 \
+  --eval_episodes=50 \
+  --save_interval=50000 \
+  --video_episodes=0 \
+  --agent.action_chunking=True \
+  --agent.actor_hidden_dims='(512, 512, 512, 512)' \
+  --agent.value_hidden_dims='(512, 512, 512, 512)' \
+  --agent.actor_layer_norm=False \
+  --agent.value_layer_norm=True \
+  --agent.batch_size=256 \
+  --agent.lr=0.0003 \
+  --agent.num_qs=10 \
+  --agent.rho=0.5 \
+  --agent.discount=0.99 \
+  --agent.tau=0.005 \
+  --agent.flow_steps=10 \
+  --agent.best_of_n=1 \
+  --agent.alpha=0.1
